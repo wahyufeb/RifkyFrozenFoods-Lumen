@@ -27,7 +27,7 @@ class Products extends Model
 
   public function category()
   {
-    return $this->hasOne('App\ProductCategories', 'id_product_category');
+    return $this->hasOne('App\ProductCategories', 'id_product_category', 'id_product_category');
   }
 
   public function price()

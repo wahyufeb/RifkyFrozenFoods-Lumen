@@ -76,10 +76,10 @@ class ProductService
     return $response->getResponse();
   }
 
-  public function deleteProduct($dataId)
+  public function deleteProduct($productId)
   {
     try {
-      $imageName = $this->DAOService->getDataId($this->model, ['id_product' => $dataId])->image;
+      $imageName = $this->DAOService->getDataId($this->model, ['id_product' => $productId])->image;
 
       if ($imageName !== '') {
         $destinationPath = './uploads/products/';
@@ -89,7 +89,7 @@ class ProductService
           unlink($fullPathImage);
         }
 
-        $deleteData  = $this->DAOService->deleteData($this->model, ['id_product' => $dataId]);
+        $deleteData  = $this->DAOService->deleteData($this->model, ['id_product' => $productId]);
 
         if ($deleteData <= 0) {
           $response = new ResponsePresentationLayer(404, "Gagal dihapus", [], true);
@@ -107,10 +107,10 @@ class ProductService
     return $response->getResponse();
   }
 
-  public function updateProduct($request, $dataId)
+  public function updateProduct($request, $productId)
   {
     try {
-      $imageName = $this->uploadPhoto($request, $dataId);
+      $imageName = $this->uploadPhoto($request, $productId);
       $products = [
         'image'                 => $imageName,
         'name'                  => $request->input('name'),
@@ -118,10 +118,11 @@ class ProductService
         'total_perunit'         => $request->input('total_perunit'),
       ];
 
-      $updateData = $this->DAOService->updateData($this->model, ['id_product' => $dataId], $products);
+      $updateData = $this->DAOService->updateData($this->model, ['id_product' => $productId], $products);
+      $updatedData = $this->DAOService->getDataId($this->model, ['id_product' => $productId]);
 
       if ($updateData) {
-        $response = new ResponsePresentationLayer(201, "Produk Berhasil diubah", $updateData, false);
+        $response = new ResponsePresentationLayer(201, "Produk Berhasil diubah", $updatedData, false);
       } else {
         $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }
@@ -133,7 +134,7 @@ class ProductService
     return $response->getResponse();
   }
 
-  public function uploadPhoto($request, $dataId)
+  public function uploadPhoto($request, $productId)
   {
     try {
       if ($request->hasFile('image')) {
@@ -145,8 +146,8 @@ class ProductService
         $photoName = Str::random(15);
         $fixPhotoName = $photoName . '.' . $extension;
 
-        if ($dataId != null) {
-          $imageData = $this->DAOService->getDataId($this->model, ['id_product' => $dataId]);
+        if ($productId != null) {
+          $imageData = $this->DAOService->getDataId($this->model, ['id_product' => $productId]);
           $fullPathImage = $destinationPath . '/' . $imageData->image;
           if ($reqPhoto->move($destinationPath, $fixPhotoName)) {
             // hapus file image yang lama
@@ -155,7 +156,7 @@ class ProductService
             }
 
             // update data image di database
-            $this->DAOService->updateSingleField($this->model, ['id_product' => $dataId], $fixPhotoName, 'image');
+            $this->DAOService->updateSingleField($this->model, ['id_product' => $productId], $fixPhotoName, 'image');
             return $fixPhotoName;
           } else {
             $response = new ResponsePresentationLayer(500, "Terjadi Kesalahan pada saat Upload Foto", [], true);

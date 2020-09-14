@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Invoices extends Model
+class Cashier extends Model
 {
   /**
    * The attributes that are mass assignable.
@@ -12,25 +12,21 @@ class Invoices extends Model
    * @var array
    */
 
-  protected $primaryKey = 'id_invoice';
-  protected $table = 'invoices';
+  protected $primaryKey = 'id_cashier';
+  protected $table = 'cashier';
   protected $hidden = [
+    'password',
     'created_at',
     'updated_at'
   ];
   protected $fillable = [
-    'id_cashier',
-    'id_store',
-    'date',
-    'total',
-    'buyer_money',
-    'change_money',
+    'username',
+    'photo',
+    'name',
+    'password',
+    'id_product_storage',
+    'id_store'
   ];
-
-  public function cashier()
-  {
-    return $this->hasOne('App\Cashier', 'id_cashier', 'id_cashier');
-  }
 
   public function store()
   {
