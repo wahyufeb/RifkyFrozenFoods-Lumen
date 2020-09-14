@@ -43,14 +43,14 @@ class ProductController extends Controller
     return $this->productService->saveProduct($request);
   }
 
-  public function delete($dataId)
+  public function delete($productId)
   {
-    return $this->productService->deleteProduct($dataId);
+    return $this->productService->deleteProduct($productId);
   }
 
-  public function update(Request $request, $dataId)
+  public function update(Request $request, $productId)
   {
     $this->validationData($request);
-    return $this->productService->updateProduct($request, $dataId);
+    return $this->productService->updateProduct($request, $productId);
   }
 }
