@@ -17,6 +17,7 @@ class CreateInvoicesTable extends Migration
             $table->id('id_invoice');
             // $table->unsignedBigInteger('id_cashier');
             $table->foreignId('id_cashier');
+            $table->foreignId('id_store');
             $table->dateTime('date', 0);
             $table->bigInteger('total');
             $table->bigInteger('buyer_money');
