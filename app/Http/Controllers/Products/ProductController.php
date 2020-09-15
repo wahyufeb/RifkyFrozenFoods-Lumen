@@ -13,6 +13,17 @@ class ProductController extends Controller
 
   public function __construct(ProductService $productService)
   {
+    // $this->middleware('jwt:admin', ['only' => [
+    //   'update',
+    //   'delete',
+    //   'save',
+    //   'products',
+    //   'totalProducts'
+    // ]]);
+    // $this->middleware('jwt:warehouse_admin', ['only' => [
+    //   'products',
+    // ]]);
+    $this->middleware('jwt');
     $this->productService = $productService;
   }
 

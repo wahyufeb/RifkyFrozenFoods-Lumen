@@ -13,6 +13,18 @@ class ProductCategoryController extends Controller
 
 	public function __construct(ProductCategoryService $productCategoryService)
 	{
+		// $this->middleware('jwt:admin', ['only' => [
+		// 	'delete',
+		// 	'save',
+		// 	'productCategories',
+		// ]]);
+		// $this->middleware('jwt:warehouse_admin', ['only' => [
+		// 	'productCategories',
+		// ]]);
+		// $this->middleware('jwt:cashier', ['only' => [
+		// 	'productCategories',
+		// ]]);
+		$this->middleware('jwt');
 		$this->productCategoryService = $productCategoryService;
 	}
 

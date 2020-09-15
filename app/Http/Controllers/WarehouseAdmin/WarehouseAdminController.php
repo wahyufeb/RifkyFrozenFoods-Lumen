@@ -13,6 +13,14 @@ class WarehouseAdminController extends Controller
 
   public function __construct(WarehouseAdminService $warehouseAdminService)
   {
+    // $this->middleware('jwt:warehouse_admin', ['only' => [
+    //   'allWarehouseAdmin',
+    //   'save',
+    //   'delete',
+    //   'update',
+    //   'refreshToken'
+    // ]]);
+    $this->middleware('jwt', ['except' => ['login, refreshToken']]);
     $this->warehouseAdminService = $warehouseAdminService;
   }
 
@@ -20,7 +28,7 @@ class WarehouseAdminController extends Controller
   private function validationData($request)
   {
     $this->validate($request, [
-      'username'            => 'required|unique:cashier',
+      'username'            => 'required|unique:warehouse_admin',
       'name'                => 'required|min:3',
       'password'            => 'required|min:3',
       'id_product_storage'  => 'required',
@@ -35,6 +43,23 @@ class WarehouseAdminController extends Controller
       'name'                => 'required|min:3',
       'password'            => 'required|min:3',
     ]);
+  }
+
+  public function login(Request $request)
+  {
+    $this->validate($request, [
+      'username'  => 'required',
+      'password'  => 'required'
+    ]);
+    return $this->warehouseAdminService->loginWarehouseAdmin($request);
+  }
+
+  public function refreshToken(Request $request)
+  {
+    $this->validate($request, [
+      'refresh_token' => 'required'
+    ]);
+    return $this->warehouseAdminService->refreshTokenWarehouseAdmin($request);
   }
 
   public function allWarehouseAdmin()

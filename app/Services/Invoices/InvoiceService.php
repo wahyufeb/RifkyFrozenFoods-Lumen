@@ -48,7 +48,7 @@ class InvoiceService
   public function allInvoicesData()
   {
     try {
-      $invoices = $this->model::with('cashier', 'store')->get();
+      $invoices = $this->model::with('cashier', 'store', 'transactions.product.category', 'transactions.product.price')->get();
 
       if (!$invoices || count($invoices) == 0) {
         $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
@@ -68,7 +68,7 @@ class InvoiceService
   {
     try {
       $today  = explode(" ", $this->now)[0];
-      $invoicesToday = $this->model::with('cashier', 'store')
+      $invoicesToday = $this->model::with('cashier', 'store', 'transactions.product.category', 'transactions.product.price')
         ->where('date', 'like', '%' . $today . '%')->get();
 
       if (!$invoicesToday || count($invoicesToday) == 0) {
@@ -88,7 +88,7 @@ class InvoiceService
   public function invoicesDateByStoreData($storeId, $dateFrom, $dateTo)
   {
     try {
-      $invoicesDateByStore = $this->model::with('cashier', 'store')
+      $invoicesDateByStore = $this->model::with('cashier', 'store', 'transactions.product.category', 'transactions.product.price')
         ->where(['id_store' => $storeId])
         ->whereBetween('date', [$dateFrom, $dateTo])
         ->get();
@@ -110,7 +110,7 @@ class InvoiceService
   public function invoicesDateData($dateFrom, $dateTo)
   {
     try {
-      $invoicesDate = $this->model::with('cashier', 'store')
+      $invoicesDate = $this->model::with('cashier', 'store', 'transactions.product.category', 'transactions.product.price')
         ->whereBetween('date', [$dateFrom, $dateTo])
         ->get();
 
@@ -166,7 +166,7 @@ class InvoiceService
 
     try {
       $today  = explode(" ", $this->now)[0];
-      $invoiceTodayByStore = $this->model::with('cashier', 'store')
+      $invoiceTodayByStore = $this->model::with('cashier', 'store', 'transactions.product.category', 'transactions.product.price')
         ->where(['id_store' => $storeId])
         ->where('date', 'like', '%' . $today . '%')->get();
 

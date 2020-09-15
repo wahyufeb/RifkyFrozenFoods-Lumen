@@ -13,6 +13,7 @@ class PriceCategoryController extends Controller
 
   public function __construct(PriceCategoryService $priceCategoryService)
   {
+    $this->middleware('jwt');
     $this->priceCategoryService = $priceCategoryService;
   }
 

@@ -13,6 +13,16 @@ class ProductStorageController extends Controller
 
   public function __construct(ProductStorageService $productStorageService)
   {
+    // $this->middleware('jwt:warehouse_admin', ['only' => [
+    //   'incomingGoods',
+    //   'getByStoreId',
+    // ]]);
+    // $this->middleware('jwt:cashier', ['only' => [
+    //   'totalStockByStoreId',
+    //   'totalProductByStoreId',
+    //   'getByStoreId',
+    // ]]);
+    $this->middleware('jwt');
     $this->productStorageService = $productStorageService;
   }
 

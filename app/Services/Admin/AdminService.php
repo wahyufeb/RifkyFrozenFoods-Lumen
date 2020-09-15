@@ -1,48 +1,46 @@
 <?php
 
-namespace App\Services\Cashier;
+namespace App\Services\Admin;
 
 use Illuminate\Support\Facades\Hash;
-use App\Cashier;
+use App\Admin;
 use App\Services\ResponsePresentationLayer;
 use App\Services\DAOService;
 
-class CashierService
+class AdminService
 {
   private $DAOService;
   private $model;
-  public function __construct(DAOService $DAOService, Cashier $model)
+  public function __construct(DAOService $DAOService, Admin $model)
   {
     $this->DAOService = $DAOService;
     $this->model = $model;
   }
 
-  public function loginCashier($request)
+  public function loginAdmin($request)
   {
-    return $this->DAOService->loginProcess($this->model, 'cashier', $request);
+    return $this->DAOService->loginProcess($this->model, 'admin', $request);
   }
 
-  public function refreshTokenCashier($request)
+  public function refreshTokenAdmin($request)
   {
-    return $this->DAOService->refreshTokenProcess($this->model, 'cashier', $request);
+    return $this->DAOService->refreshTokenProcess($this->model, 'admin', $request);
   }
 
-  public function saveCashier($request)
+  public function saveAdmin($request)
   {
     try {
-      $cashier = [
+      $adminData = [
+        'photo'               => 'admin.png',
         'username'            => $request->input('username'),
-        'photo'               => 'cashier.png',
         'name'                => $request->input('name'),
         'password'            => Hash::make($request->input('password')),
-        'id_product_storage'  => $request->input('id_product_storage'),
-        'id_store'            => $request->input('id_store'),
       ];
 
-      $saveData = $this->DAOService->saveData($this->model, $cashier);
+      $saveData = $this->DAOService->saveData($this->model, $adminData);
 
       if ($saveData) {
-        $response = new ResponsePresentationLayer(201, "Kasir Berhasil ditambahkan", $saveData, false);
+        $response = new ResponsePresentationLayer(201, "Admin Berhasil ditambahkan", $saveData, false);
       } else {
         $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }
@@ -54,17 +52,17 @@ class CashierService
     return $response->getResponse();
   }
 
-  public function allCashier()
+  public function allAdmin()
   {
     try {
-      $cashier = $this->model::with('store')->get();
+      $adminData = $this->DAOService->getAllData($this->model);
 
-      if (!$cashier || count($cashier) == 0) {
+      if (!$adminData || count($adminData) == 0) {
         $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
         return $response->getResponse();
       }
 
-      $response = new ResponsePresentationLayer(200, "Data Berhasil ditemukan", $cashier, false);
+      $response = new ResponsePresentationLayer(200, "Data Berhasil ditemukan", $adminData, false);
     } catch (\Exception $e) {
       $errors[] = $e->getMessage();
       $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], $errors);
@@ -73,10 +71,10 @@ class CashierService
     return $response->getResponse();
   }
 
-  public function deleteCashier($cashierId)
+  public function deleteAdmin($adminId)
   {
     try {
-      $deleteData  = $this->DAOService->deleteData($this->model, ['id_cashier' => $cashierId]);
+      $deleteData  = $this->DAOService->deleteData($this->model, ['id_admin' => $adminId]);
 
       if ($deleteData <= 0) {
         $response = new ResponsePresentationLayer(404, "Gagal dihapus, Id tidak ditemukan", [], true);
@@ -91,19 +89,19 @@ class CashierService
     return $response->getResponse();
   }
 
-  public function updateCashier($request, $cashierId)
+  public function updateAdmin($request, $adminId)
   {
     try {
-      $cashier = [
+      $adminData = [
         'name'                => $request->input('name'),
         'password'            => Hash::make($request->input('password')),
       ];
 
-      $updateData = $this->DAOService->updateData($this->model, ['id_cashier' => $cashierId], $cashier);
-      $updatedData = $this->DAOService->getDataId($this->model, ['id_cashier' => $cashierId],);
+      $updateData = $this->DAOService->updateData($this->model, ['id_admin' => $adminId], $adminData);
+      $updatedData = $this->DAOService->getDataId($this->model, ['id_admin' => $adminId],);
 
       if ($updateData) {
-        $response = new ResponsePresentationLayer(201, "Data Kasir Berhasil diupdate", $updatedData, false);
+        $response = new ResponsePresentationLayer(201, "Data Admin Berhasil diupdate", $updatedData, false);
       } else {
         $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }

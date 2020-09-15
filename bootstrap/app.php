@@ -73,12 +73,12 @@ $app->configure('app');
 */
 
 // $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
+//     App\Http\Middleware\JWTMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'jwt' => App\Http\Middleware\JWTMiddleware::class
+]);
 
 /*
 |--------------------------------------------------------------------------

@@ -26,6 +26,6 @@ class PriceCategories extends Model
 
   public function products()
   {
-    return $this->belongsTo('App\Products', 'id_product');
+    return $this->belongsTo('App\Products', 'id_product', 'id_product');
   }
 }

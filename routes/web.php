@@ -120,7 +120,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 		// Jumlah seluruh kolom total pada invoice
 		$router->get('/total-income', 'Invoices\InvoiceController@invoiceIncomeAll');
 
-		// Kasir membuat transaksi dengan membuat invoice dan transaction
+		// Kasir membuat invoice dari suatu transaksi
 		$router->post('/create', 'Invoices\InvoiceController@save');
 
 		// Ambil data invoice hari ini berdasarkan storeId
@@ -142,11 +142,27 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 	/*
 	|--------------------------------------------------------------------------
+	| Transaction Router
+	|--------------------------------------------------------------------------
+	| Berisi fitur untuk membuat transaksi dari suatu invoice
+	*/
+	$router->group(['prefix' => 'transaction'], function () use ($router) {
+		$router->post('/create', 'Transactions\TransactionController@save');
+	});
+
+	/*
+	|--------------------------------------------------------------------------
 	| Cashier Router
 	|--------------------------------------------------------------------------
 	| Berisi fitur untuk mengatur Kasir
 	*/
 	$router->group(['prefix' => 'users/cashier'], function () use ($router) {
+		// Login untuk Cashier
+		$router->post('login', 'Cashier\CashierController@login');
+
+		// Refresh Token untuk Cashier
+		$router->post('refresh-token', 'Cashier\CashierController@refreshToken');
+
 		// Ambil seluruh data cashier
 		$router->get('/', 'Cashier\CashierController@allCashier');
 
@@ -167,6 +183,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	| Berisi fitur untuk mengatur Admin Gudang
 	*/
 	$router->group(['prefix' => 'users/warehouse'], function () use ($router) {
+		// Login untuk Admin Gudang
+		$router->post('login', 'WarehouseAdmin\WarehouseAdminController@login');
+
+		// Refresh Token untuk Admin Gudang
+		$router->post('refresh-token', 'WarehouseAdmin\WarehouseAdminController@refreshToken');
+
 		// Ambil seluruh data warehouse admin
 		$router->get('/', 'WarehouseAdmin\WarehouseAdminController@allWarehouseAdmin');
 
@@ -178,6 +200,32 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 		// Membuat warehouse admin baru 
 		$router->post('/create', 'WarehouseAdmin\WarehouseAdminController@save');
+	});
+
+	/*
+	|--------------------------------------------------------------------------
+	| Admin Router
+	|--------------------------------------------------------------------------
+	| Berisi fitur untuk mengatur Admin
+	*/
+	$router->group(['prefix' => 'users/admin'], function () use ($router) {
+		// Login untuk Admin
+		$router->post('login', 'Admin\AdminController@login');
+
+		// Refresh Token untuk Admin
+		$router->post('refresh-token', 'Admin\AdminController@refreshToken');
+
+		// Ambil seluruh data admin
+		$router->get('/', 'Admin\AdminController@allAdmin');
+
+		// Menghapus admin
+		$router->delete('{adminId}/delete', 'Admin\AdminController@delete');
+
+		// Mengedit admin
+		$router->put('{adminId}/update', 'Admin\AdminController@update');
+
+		// Membuat admin baru 
+		$router->post('create', 'Admin\AdminController@save');
 	});
 
 	/*

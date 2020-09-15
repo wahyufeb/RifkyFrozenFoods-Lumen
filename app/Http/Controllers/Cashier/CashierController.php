@@ -13,6 +13,14 @@ class CashierController extends Controller
 
   public function __construct(CashierService $cashierService)
   {
+    // $this->middleware('jwt:admin', ['only' => [
+    //   'allCashier',
+    //   'save',
+    //   'delete',
+    //   'update',
+    //   'refreshToken'
+    // ]]);
+    $this->middleware('jwt', ['except' => ['login, refreshToken']]);
     $this->cashierService = $cashierService;
   }
 
@@ -35,6 +43,23 @@ class CashierController extends Controller
       'name'                => 'required|min:3',
       'password'            => 'required|min:3',
     ]);
+  }
+
+  public function login(Request $request)
+  {
+    $this->validate($request, [
+      'username'  => 'required',
+      'password'  => 'required'
+    ]);
+    return $this->cashierService->loginCashier($request);
+  }
+
+  public function refreshToken(Request $request)
+  {
+    $this->validate($request, [
+      'refresh_token' => 'required'
+    ]);
+    return $this->cashierService->refreshTokenCashier($request);
   }
 
   public function allCashier()

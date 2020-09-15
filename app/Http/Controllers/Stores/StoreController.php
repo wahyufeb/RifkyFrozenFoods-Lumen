@@ -13,6 +13,13 @@ class StoreController extends Controller
 
   public function __construct(StoreService $storeService)
   {
+    // $this->middleware('jwt', ['only' => [
+    //   'stores',
+    // ]]);
+    // $this->middleware('jwt:admin', ['only' => [
+    //   'stores',
+    // ]]);
+    $this->middleware('jwt');
     $this->storeService = $storeService;
   }
 

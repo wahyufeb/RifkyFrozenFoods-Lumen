@@ -13,6 +13,26 @@ class InvoiceController extends Controller
 
   public function __construct(InvoiceService $invoiceService)
   {
+    // $this->middleware('jwt:admin', ['only' => [
+    //   'invoicesDate',
+    //   'invoicesDateByStore',
+    //   'invoices',
+    //   'invoiceIncomeToday',
+    //   'invoiceIncomeAll',
+    // ]]);
+    // $this->middleware('jwt:warehouse_admin', ['only' => [
+    //   'invoicesDate',
+    //   'invoicesDateByStore',
+    //   'invoices',
+    //   'invoiceIncomeToday',
+    // ]]);
+    // $this->middleware('jwt:cashier', ['only' => [
+    //   'invoiceIncomeTodayByStore',
+    //   'invoicesDateByStore',
+    //   'invoiceTodayByStoreId',
+    //   'save',
+    // ]]);
+    $this->middleware('jwt');
     $this->invoiceService = $invoiceService;
   }
 

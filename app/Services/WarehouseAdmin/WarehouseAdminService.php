@@ -17,6 +17,16 @@ class WarehouseAdminService
     $this->model = $model;
   }
 
+  public function loginWarehouseAdmin($request)
+  {
+    return $this->DAOService->loginProcess($this->model, 'warehouse_admin', $request);
+  }
+
+  public function refreshTokenWarehouseAdmin($request)
+  {
+    return $this->DAOService->refreshTokenProcess($this->model, 'warehouse_admin', $request);
+  }
+
   public function saveWarehouseAdmin($request)
   {
     try {
