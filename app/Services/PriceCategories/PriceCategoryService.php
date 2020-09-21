@@ -62,7 +62,7 @@ class PriceCategoryService
   public function deletePriceCategory($dataId)
   {
     try {
-      $deleteData  = $this->DAOService->deleteData($this->model, ['id_price_category' => $dataId]);
+      $deleteData  = $this->DAOService->deleteData($this->model, ['id_product' => $dataId]);
 
       if ($deleteData <= 0) {
         $response = new ResponsePresentationLayer(404, "Gagal dihapus, Id tidak ditemukan", [], true);
@@ -86,8 +86,8 @@ class PriceCategoryService
         'price'       => $request->input('price'),
       ];
 
-      $updateData = $this->DAOService->updateData($this->model, ['id_product' => $dataId], $priceCategory);
-      $updatedData = $this->DAOService->getDataId($this->model, ['id_product' => $dataId]);
+      $updateData = $this->DAOService->updateData($this->model, ['id_product' => $dataId, 'name' => $priceCategory['name']], $priceCategory);
+      $updatedData = $this->DAOService->getDataId($this->model, ['id_product' => $dataId, 'name' => $priceCategory['name']]);
 
       if ($updateData) {
         $response = new ResponsePresentationLayer(201, "Kategori harga Berhasil diupdate", $updatedData, false);

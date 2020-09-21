@@ -21,7 +21,7 @@ class PriceCategoryController extends Controller
   private function validationData($request)
   {
     $this->validate($request, [
-      // 'id_product'  => 'required',
+      'id_product'  => 'required',
       'name'  => 'required|min:3',
       'price'  => 'required',
     ]);
