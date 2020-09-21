@@ -18,7 +18,7 @@ class DAOService
       'iss' => 'RIFKYFROZENFOODS',
       'sub' => $data,
       'iat' => time(),
-      'exp' => time() + 60 * 60
+      'exp' => time() + (60 * 60) * 5
     ];
 
     return JWT::encode($payload, $key);
@@ -52,8 +52,9 @@ class DAOService
 
         $subEncrypt = Crypt::encryptString($credentials->sub->id);
         $userData['refresh'] = $subEncrypt;
+        $userData['role'] = $credentials->sub->role;
 
-        $response = new ResponsePresentationLayer(200, "Login Sukses", [$userData, $credentials->sub->role], false);
+        $response = new ResponsePresentationLayer(200, "Login Sukses", $userData, false);
       } else {
         $response = new ResponsePresentationLayer(401, "Password Anda Salah", [], true);
       }

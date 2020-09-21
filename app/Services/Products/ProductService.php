@@ -29,9 +29,12 @@ class ProductService
       ];
 
       $saveData = $this->DAOService->saveData($this->model, $products);
+      $getDataProduct = $this->model::with('category', 'price')
+        ->where(['id_product' => $saveData->id_product])
+        ->get();
 
       if ($saveData) {
-        $response = new ResponsePresentationLayer(201, "Produk Berhasil ditambahkan", $saveData, false);
+        $response = new ResponsePresentationLayer(201, "Produk Berhasil ditambahkan", $getDataProduct[0], false);
       } else {
         $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }
@@ -119,10 +122,12 @@ class ProductService
       ];
 
       $updateData = $this->DAOService->updateData($this->model, ['id_product' => $productId], $products);
-      $updatedData = $this->DAOService->getDataId($this->model, ['id_product' => $productId]);
+      $updatedData = $this->model::with('category', 'price')
+      ->where(['id_product' => $productId])
+      ->get();
 
       if ($updateData) {
-        $response = new ResponsePresentationLayer(201, "Produk Berhasil diubah", $updatedData, false);
+        $response = new ResponsePresentationLayer(201, "Produk Berhasil diubah", $updatedData[0], false);
       } else {
         $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }

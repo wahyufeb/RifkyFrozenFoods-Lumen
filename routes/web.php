@@ -50,7 +50,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 		// Delete
 		$router->delete('{dataId}/delete', 'PriceCategories\PriceCategoryController@delete');
 		// Update
-		$router->put('{dataId}/update', 'PriceCategories\PriceCategoryController@update');
+		$router->post('{dataId}/update', 'PriceCategories\PriceCategoryController@update');
 		// Create 
 		$router->post('/create', 'PriceCategories\PriceCategoryController@save');
 	});
@@ -163,6 +163,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 		// Refresh Token untuk Cashier
 		$router->post('refresh-token', 'Cashier\CashierController@refreshToken');
 
+		// Authorization
+		$router->get('{cashierId}/authorization', 'Cashier\CashierController@authorization');
+
 		// Ambil seluruh data cashier
 		$router->get('/', 'Cashier\CashierController@allCashier');
 
@@ -189,6 +192,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 		// Refresh Token untuk Admin Gudang
 		$router->post('refresh-token', 'WarehouseAdmin\WarehouseAdminController@refreshToken');
 
+		// Authorization
+		$router->get('{warehouseId}/authorization', 'WarehouseAdmin\WarehouseAdminController@authorization');
+
 		// Ambil seluruh data warehouse admin
 		$router->get('/', 'WarehouseAdmin\WarehouseAdminController@allWarehouseAdmin');
 
@@ -214,6 +220,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 		// Refresh Token untuk Admin
 		$router->post('refresh-token', 'Admin\AdminController@refreshToken');
+
+		// Authorization
+		$router->get('{adminId}/authorization', 'Admin\AdminController@authorization');
 
 		// Ambil seluruh data admin
 		$router->get('/', 'Admin\AdminController@allAdmin');

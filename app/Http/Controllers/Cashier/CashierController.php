@@ -20,7 +20,7 @@ class CashierController extends Controller
     //   'update',
     //   'refreshToken'
     // ]]);
-    $this->middleware('jwt', ['except' => ['login, refreshToken']]);
+    $this->middleware('jwt', ['except' => ['login', 'refreshToken']]);
     $this->cashierService = $cashierService;
   }
 
@@ -60,6 +60,11 @@ class CashierController extends Controller
       'refresh_token' => 'required'
     ]);
     return $this->cashierService->refreshTokenCashier($request);
+  }
+
+  public function authorization($cashierId)
+  {
+    return $this->cashierService->authorizationData($cashierId);
   }
 
   public function allCashier()

@@ -86,13 +86,11 @@ class PriceCategoryService
         'price'       => $request->input('price'),
       ];
 
-      $updateData = $this->DAOService->updateData($this->model, ['id_price_category' => $dataId], $priceCategory);
-      $updatedData = $this->DAOService->getDataId($this->model, ['id_price_category' => $dataId],);
+      $updateData = $this->DAOService->updateData($this->model, ['id_product' => $dataId], $priceCategory);
+      $updatedData = $this->DAOService->getDataId($this->model, ['id_product' => $dataId]);
 
       if ($updateData) {
         $response = new ResponsePresentationLayer(201, "Kategori harga Berhasil diupdate", $updatedData, false);
-      } else {
-        $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }
     } catch (\Exception $e) {
       $errors[] = $e->getMessage();

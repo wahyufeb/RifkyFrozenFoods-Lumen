@@ -27,6 +27,27 @@ class WarehouseAdminService
     return $this->DAOService->refreshTokenProcess($this->model, 'warehouse_admin', $request);
   }
 
+  public function authorizationData($warehouseId)
+  {
+    try {
+      $warehouse = $this->model::with('store')
+        ->where(['id_warehouse_admin' => $warehouseId])
+        ->get();
+
+      if (!$warehouse) {
+        $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
+        return $response->getResponse();
+      }
+
+      $response = new ResponsePresentationLayer(200, "Data Berhasil ditemukan", $warehouse[0], false);
+    } catch (\Exception $e) {
+      $errors[] = $e->getMessage();
+      $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], $errors);
+    }
+
+    return $response->getResponse();
+  }
+
   public function saveWarehouseAdmin($request)
   {
     try {

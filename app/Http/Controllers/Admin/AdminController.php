@@ -12,7 +12,7 @@ class AdminController extends Controller
 
   public function __construct(AdminService $adminService)
   {
-    $this->middleware('jwt', ['except' => ['login, refreshToken']]);
+    $this->middleware('jwt', ['except' => ['login', 'refreshToken']]);
     $this->adminService = $adminService;
   }
 
@@ -50,6 +50,11 @@ class AdminController extends Controller
       'refresh_token' => 'required'
     ]);
     return $this->adminService->refreshTokenAdmin($request);
+  }
+
+  public function authorization($adminId)
+  {
+    return $this->adminService->authorizationData($adminId);
   }
 
   public function allAdmin()

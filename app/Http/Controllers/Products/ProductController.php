@@ -31,8 +31,8 @@ class ProductController extends Controller
   private function validationData($request)
   {
     $this->validate($request, [
-      'image'                 => 'required|image|mimes:jpeg,png,jpg|max:2048',
-      'name'                  => 'required|min:3',
+      'image'                 => 'required|image|max:2048',
+      'name'                  => 'required',
       'id_product_category'   => 'required',
       'total_perunit'         => 'required',
     ]);

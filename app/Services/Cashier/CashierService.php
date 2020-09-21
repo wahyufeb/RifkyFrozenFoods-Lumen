@@ -27,6 +27,27 @@ class CashierService
     return $this->DAOService->refreshTokenProcess($this->model, 'cashier', $request);
   }
 
+  public function authorizationData($cashierId)
+  {
+    try {
+      $cashier = $this->model::with('store')
+        ->where(['id_cashier' => $cashierId])
+        ->get();
+
+      if (!$cashier || count($cashier) == 0) {
+        $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
+        return $response->getResponse();
+      }
+
+      $response = new ResponsePresentationLayer(200, "Data Berhasil ditemukan", $cashier[0], false);
+    } catch (\Exception $e) {
+      $errors[] = $e->getMessage();
+      $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], $errors);
+    }
+
+    return $response->getResponse();
+  }
+
   public function saveCashier($request)
   {
     try {
@@ -59,7 +80,7 @@ class CashierService
     try {
       $cashier = $this->model::with('store')->get();
 
-      if (!$cashier || count($cashier) == 0) {
+      if (!$cashier) {
         $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
         return $response->getResponse();
       }

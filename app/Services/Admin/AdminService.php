@@ -52,6 +52,25 @@ class AdminService
     return $response->getResponse();
   }
 
+  public function authorizationData($adminId)
+  {
+    try {
+      $adminData = $this->DAOService->getDataId($this->model, ['id_admin' => $adminId]);
+
+      if (!$adminData) {
+        $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
+        return $response->getResponse();
+      }
+
+      $response = new ResponsePresentationLayer(200, "Data Berhasil ditemukan", $adminData, false);
+    } catch (\Exception $e) {
+      $errors[] = $e->getMessage();
+      $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], $errors);
+    }
+
+    return $response->getResponse();
+  }
+
   public function allAdmin()
   {
     try {

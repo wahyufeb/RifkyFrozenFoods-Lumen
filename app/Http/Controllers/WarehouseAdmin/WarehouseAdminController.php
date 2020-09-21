@@ -20,7 +20,7 @@ class WarehouseAdminController extends Controller
     //   'update',
     //   'refreshToken'
     // ]]);
-    $this->middleware('jwt', ['except' => ['login, refreshToken']]);
+    $this->middleware('jwt', ['except' => ['login', 'refreshToken']]);
     $this->warehouseAdminService = $warehouseAdminService;
   }
 
@@ -60,6 +60,11 @@ class WarehouseAdminController extends Controller
       'refresh_token' => 'required'
     ]);
     return $this->warehouseAdminService->refreshTokenWarehouseAdmin($request);
+  }
+
+  public function authorization($warehouseId)
+  {
+    return $this->warehouseAdminService->authorizationData($warehouseId);
   }
 
   public function allWarehouseAdmin()
