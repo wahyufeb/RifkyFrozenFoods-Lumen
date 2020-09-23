@@ -64,4 +64,15 @@ class ProductController extends Controller
     $this->validationData($request);
     return $this->productService->updateProduct($request, $productId);
   }
+
+  public function productCategory($idProductCategory)
+  {
+    return $this->productService->productCategoryData($idProductCategory);
+  }
+
+  public function search(Request $request)
+  {
+    return $this->productService->searchProuct($request);
+  }
+
 }

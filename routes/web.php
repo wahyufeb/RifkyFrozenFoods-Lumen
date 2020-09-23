@@ -96,6 +96,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 		// Membuat produk baru 
 		$router->post('/create', 'Products\ProductController@save');
+
+		// Ambil data produk berdasarkan kategori produk
+		$router->get('{idProductCategory}/category', 'Products\ProductController@productCategory');
+
+		// Mencari data produk
+		$router->get('/search', 'Products\ProductController@search');
 	});
 
 	/*

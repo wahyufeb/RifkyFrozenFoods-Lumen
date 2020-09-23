@@ -139,6 +139,50 @@ class ProductService
     return $response->getResponse();
   }
 
+  public function productCategoryData($idProductCategory)
+  {
+    try {
+      $productsCategory = $this->model::with('category', 'price')
+      ->where(['id_product_category' => $idProductCategory])
+      ->get();
+
+      if (!$productsCategory || count($productsCategory) == 0) {
+        $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
+        return $response->getResponse();
+      }
+
+      $response = new ResponsePresentationLayer(200, "Data Berhasil ditemukan", $productsCategory, false);
+    } catch (\Exception $e) {
+      $errors[] = $e->getMessage();
+      $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], $errors);
+    }
+
+    return $response->getResponse();
+
+  }
+
+  public function searchProuct($request)
+  {
+    try {
+      $q = $request->q;
+      $searchResult = $this->model::with('category', 'price')
+      ->where('name', 'like', '%'.$q.'%')
+      ->get();
+
+      if (!$searchResult || count($searchResult) == 0) {
+        $response = new ResponsePresentationLayer(404, "Data Tidak ditemukan", [], true);
+        return $response->getResponse();
+      }
+
+      $response = new ResponsePresentationLayer(200, "Data Berhasil ditemukan", $searchResult, false);
+    } catch (\Exception $e) {
+      $errors[] = $e->getMessage();
+      $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], $errors);
+    }
+
+    return $response->getResponse();
+  }
+
   public function uploadPhoto($request, $productId)
   {
     try {
@@ -181,4 +225,5 @@ class ProductService
 
     return $response->getResponse();
   }
+
 }
