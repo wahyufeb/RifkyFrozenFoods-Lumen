@@ -61,9 +61,12 @@ class CashierService
       ];
 
       $saveData = $this->DAOService->saveData($this->model, $cashier);
-
+      $getDataCashier = $this->model::with('store')
+        ->where(['id_cashier' => $saveData->id_cashier])
+        ->get();
+      
       if ($saveData) {
-        $response = new ResponsePresentationLayer(201, "Kasir Berhasil ditambahkan", $saveData, false);
+        $response = new ResponsePresentationLayer(201, "Kasir Berhasil ditambahkan", $getDataCashier[0], false);
       } else {
         $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }

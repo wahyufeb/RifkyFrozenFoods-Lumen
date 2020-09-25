@@ -61,9 +61,12 @@ class WarehouseAdminService
       ];
 
       $saveData = $this->DAOService->saveData($this->model, $warehouseAdmin);
+      $getDataWarehouseAdmin = $this->model::with('store')
+        ->where(['id_warehouse_admin' => $saveData->id_warehouse_admin])
+        ->get();
 
       if ($saveData) {
-        $response = new ResponsePresentationLayer(201, "Admin Gudang Berhasil ditambahkan", $saveData, false);
+        $response = new ResponsePresentationLayer(201, "Admin Gudang Berhasil ditambahkan", $getDataWarehouseAdmin[0], false);
       } else {
         $response = new ResponsePresentationLayer(500, "Terjadi kesalahan pada server", [], true);
       }

@@ -52,7 +52,12 @@ class DAOService
 
         $subEncrypt = Crypt::encryptString($credentials->sub->id);
         $userData['refresh'] = $subEncrypt;
-        $userData['role'] = $credentials->sub->role;
+        if($credentials->sub->role == 'warehouse_admin'){
+          $dataRole =explode('_',  $credentials->sub->role)[0];
+        }else{
+          $dataRole = $credentials->sub->role;
+        }
+        $userData['role'] = $dataRole;
 
         $response = new ResponsePresentationLayer(200, "Login Sukses", $userData, false);
       } else {

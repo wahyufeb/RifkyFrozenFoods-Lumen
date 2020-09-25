@@ -29,8 +29,8 @@ class WarehouseAdminController extends Controller
   {
     $this->validate($request, [
       'username'            => 'required|unique:warehouse_admin',
-      'name'                => 'required|min:3',
-      'password'            => 'required|min:3',
+      'name'                => 'required',
+      'password'            => 'required',
       'id_product_storage'  => 'required',
       'id_store'            => 'required',
     ]);
