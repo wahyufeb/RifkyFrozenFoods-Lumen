@@ -153,6 +153,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 	| Berisi fitur untuk membuat transaksi dari suatu invoice
 	*/
 	$router->group(['prefix' => 'transaction'], function () use ($router) {
+		// Ambil data transaksi berdasarkan invoiceId
+		$router->get('/{invoiceId}/transactions', 'Transactions\TransactionController@transactionsByInvoice');
+		
+		// Membuat transaksi baru
 		$router->post('/create', 'Transactions\TransactionController@save');
 	});
 

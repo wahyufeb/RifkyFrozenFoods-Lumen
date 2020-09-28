@@ -36,4 +36,10 @@ class TransactionController extends Controller
     $this->validationData($request);
     return $this->transactionService->saveTransaction($request);
   }
+
+  public function transactionsByInvoice($invoiceId)
+  {
+    return $this->transactionService->transactionsByInvoiceData($invoiceId);
+  }
+
 }
