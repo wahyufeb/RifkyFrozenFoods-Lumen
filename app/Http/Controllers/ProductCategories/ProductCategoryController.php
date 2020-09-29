@@ -32,7 +32,7 @@ class ProductCategoryController extends Controller
 	private function validationData($request)
 	{
 		$this->validate($request, [
-			'name'	=> 'required|min:3',
+			'name'	=> 'required',
 		]);
 	}
 

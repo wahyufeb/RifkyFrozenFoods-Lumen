@@ -114,11 +114,17 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 		// Ambil data invoice dari seluruh store
 		$router->get('/', 'Invoices\InvoiceController@invoices');
 
-		// Ambil data invoice diantara dateFrom dan dateTo berdasarkan storeId
-		$router->get('/{storeId}/{dateFrom}/{dateTo}', 'Invoices\InvoiceController@invoicesDateByStore');
+		// Ambil data invoice hari ini berdasarkan storeId (Cashier)
+		$router->get('{storeId}/today', 'Invoices\InvoiceController@invoiceTodayByStoreId');
+
+		// Ambil data dan jumlahkan kolom total pada invoice hari ini berdasarkan storeId (Cashier)
+		$router->get('/{storeId}/total-income-today', 'Invoices\InvoiceController@invoiceIncomeTodayByStore');
+
+		// Ambil data invoice diantara dateFrom dan dateTo berdasarkan storeId (Cashier)
+		$router->get('{storeId}/{dateFrom}/{dateTo}', 'Invoices\InvoiceController@invoicesDateByStore');
 
 		//  Ambil data invoice diantara dateFrom dan dateTo
-		$router->get('/{dateFrom}/{dateTo}', 'Invoices\InvoiceController@invoicesDate');
+		$router->get('{dateFrom}/{dateTo}', 'Invoices\InvoiceController@invoicesDate');
 
 		// Jumlahkan seluruh kolom total pada invoice hari ini
 		$router->get('/total-income-today', 'Invoices\InvoiceController@invoiceIncomeToday');
@@ -128,12 +134,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 		// Kasir membuat invoice dari suatu transaksi
 		$router->post('/create', 'Invoices\InvoiceController@save');
-
-		// Ambil data invoice hari ini berdasarkan storeId
-		$router->get('{storeId}/today', 'Invoices\InvoiceController@invoiceTodayByStoreId');
-
-		// Ambil data dan jumlahkan kolom total pada invoice hari ini berdasarkan storeId
-		$router->get('{storeId}/total-income-today', 'Invoices\InvoiceController@invoiceIncomeTodayByStore');
 
 		// Delete
 		// $router->delete('{dataId}/delete', 'Invoices\InvoiceController@delete');
